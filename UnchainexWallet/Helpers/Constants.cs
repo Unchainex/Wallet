@@ -74,7 +74,7 @@ public static class Constants
 	public const string DaemonExecutableName = $"{ExecutableName}d";
 
 	/// <summary>Executable file name of Unchainex Wallet UI application (without extension).</summary>
-	public const string ExecutableName = "wassabee";
+	public const string ExecutableName = "unchainex";
 
 	/// <summary>Plist name, only for MacOs. Starts Unchainex with -startsilent argument.</summary>
 	public const string SilentPlistName = "com.unchainexwallet.startup.plist";

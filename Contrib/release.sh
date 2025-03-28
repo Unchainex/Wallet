@@ -41,9 +41,9 @@ ROOT_DIR=$(pwd)
 BUILD_DIR="$ROOT_DIR/build"
 
 # Executable name
-EXECUTABLE_NAME="wassabee"
-BACKEND_EXECUTABLE_NAME="wbackend"
-COORDINATOR_EXECUTABLE_NAME="wcoordinator"
+EXECUTABLE_NAME="unchainex"
+BACKEND_EXECUTABLE_NAME="ubackend"
+COORDINATOR_EXECUTABLE_NAME="ucoordinator"
 
 # Directory where to save the generated packages
 PACKAGES_DIR="$ROOT_DIR/packages"
@@ -152,7 +152,7 @@ for PLATFORM in "${PLATFORMS[@]}"; do
     EXE_FILE_EXTENSION=".exe"
   fi
 
-  # Rename executables as wassabee and wassabeed
+  # Rename executables as unchainex and unchained
   mv $OUTPUT_DIR/{$DESKTOP,${EXECUTABLE_NAME}}$EXE_FILE_EXTENSION
   mv $OUTPUT_DIR/{$DAEMON,${EXECUTABLE_NAME}d}$EXE_FILE_EXTENSION
   if [[ "$PACKAGE_COORDINATOR" == "yes" ]]; then
@@ -390,7 +390,7 @@ echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 	<key>CFBundleVersion</key>
 	<string>$SHORT_VERSION</string>
 	<key>CFBundleExecutable</key>
-	<string>wassabee</string>
+	<string>unchainex</string>
 	<key>CFBundleName</key>
 	<string>Unchainex Wallet</string>
 	<key>CFBundleIdentifier</key>
@@ -443,17 +443,17 @@ cp ./Contrib/Assets/.DS_Store.dat "$DMG_PATH/.DS_Store"
 # Separate files in Unchainex executables, non-unchainex executables (tor, bitcoin and so on) and the rest
 NON_EXECUTABLES=()
 OTHER_EXECUTABLES=()
-WASSABEE_EXECUTABLE=()
-WASSABEED_EXECUTABLE=()
+UNCHAINEX_EXECUTABLE=()
+UNCHAINED_EXECUTABLE=()
 while IFS= read -r -d '' file; do
   # Check if the file is a Mach-O executable
   if file "$file" | grep -q 'Mach-O.* executable'; then
     case "$(basename "$file")" in
-      "wassabee")
-        WASSABEE_EXECUTABLE+=("$file")
+      "unchainex")
+        UNCHAINEX_EXECUTABLE+=("$file")
         ;;
-      "wassabeed")
-        WASSABEED_EXECUTABLE+=("$file")
+      "unchained")
+        UNCHAINED_EXECUTABLE+=("$file")
         ;;
       *)
         OTHER_EXECUTABLES+=("$file")
@@ -464,7 +464,7 @@ while IFS= read -r -d '' file; do
   fi
 done < <(find "$APP_PATH" -type f -print0)
 
-EXECUTABLES=("${OTHER_EXECUTABLES[@]}" "${WASSABEED_EXECUTABLE[@]}" "${WASSABEE_EXECUTABLE[@]}")
+EXECUTABLES=("${OTHER_EXECUTABLES[@]}" "${UNCHAINED_EXECUTABLE[@]}" "${UNCHAINEX_EXECUTABLE[@]}")
 sudo chmod u+x "${EXECUTABLES[@]}"
 
 CERT_PATH="MacCertificate.cer"
@@ -491,7 +491,7 @@ security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PASSWORD" $K
 # Create notary profile
 xcrun notarytool store-credentials ${PROFILE_NAME} --apple-id ${MAC_APPLEID} --team-id ${MAC_TEAMID} --password ${MAC_APPLEPSSWD}
 
-# Signing all files in order (wassabee at the end)
+# Signing all files in order (unchainex at the end)
 SIGN_ARGUMENTS="--sign ${MAC_TEAMID} --verbose --force --options runtime --timestamp --entitlements $ENTITLEMENTS_PATH"
 ALL_FILES=("${NON_EXECUTABLES[@]}" "${EXECUTABLES[@]}")
 for file in "${ALL_FILES[@]}"; do

@@ -63,7 +63,7 @@ async
 wpkh
 sats
 args
-wassabee
+unchainex
 Metaco
 Circ
 Trezor
@@ -274,7 +274,7 @@ splitted
 onlybinaries
 generatekeys
 appleid
-wassabeed
+unchained
 hwi'
 bitcoind'
 optin

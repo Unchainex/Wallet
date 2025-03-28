@@ -189,11 +189,11 @@ public static class EnvironmentHelpers
 	public static string GetExecutablePath()
 	{
 		var fullBaseDir = GetFullBaseDirectory();
-		var wassabeeFileName = Path.Combine(fullBaseDir, Constants.ExecutableName);
-		wassabeeFileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? $"{wassabeeFileName}.exe" : $"{wassabeeFileName}";
-		if (File.Exists(wassabeeFileName))
+		var unchainexFileName = Path.Combine(fullBaseDir, Constants.ExecutableName);
+		unchainexFileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? $"{unchainexFileName}.exe" : $"{unchainexFileName}";
+		if (File.Exists(unchainexFileName))
 		{
-			return wassabeeFileName;
+			return unchainexFileName;
 		}
 		var assemblyName = Assembly.GetEntryAssembly()?.GetName().Name ?? throw new NullReferenceException("Assembly or Assembly's Name was null.");
 		var fluentExecutable = Path.Combine(fullBaseDir, assemblyName);
