@@ -27,7 +27,7 @@ LATEST_TAG=$(git describe --tags --abbrev=0)
 VERSION=${LATEST_TAG:1}
 SHORT_VERSION=${VERSION:0:${#VERSION}-2}
 
-# Define project names
+# Define project names (*)
 DESKTOP="UnchainexWallet.Fluent.Desktop"
 BACKEND="UnchainexWallet.Backend"
 COORDINATOR="UnchainexWallet.Coordinator"
