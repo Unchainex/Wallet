@@ -1,0 +1,9 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="UnchainexWallet.Tests.UnitTests.Fluent.Controls.AnimatedButtonTests.AnimatedButton_Defaults"
+        xmlns:c="clr-namespace:UnchainexWallet.Fluent.Controls;assembly=UnchainexWallet.Fluent"
+        Title="AnimatedButton001">
+  <c:AnimatedButton Name="TargetButton"
+                    NormalIcon="{StaticResource copy_regular}"
+                    ClickIcon="{StaticResource copy_confirmed}" />
+</Window>

@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>
+		<NoWarn>1701;1702;1705;1591;1573;CA1031;CA1822</NoWarn>
+		<Product>UnchainexWalletApi</Product>
+		<Copyright>MIT</Copyright>
+		<PackageTags>unchainexwallet, unchainex, wallet, bitcoin, nbitcoin, tor, zerolink, unchain, coinjoin, fungibility, privacy, anonymity</PackageTags>
+		<RepositoryType>Git</RepositoryType>
+		<RepositoryUrl>https://github.com/Unchainex/Wallet/</RepositoryUrl>
+		<PathMap>$(MSBuildProjectDirectory)\=UnchainexWallet.Backend</PathMap>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<StaticWebAssetsEnabled>false</StaticWebAssetsEnabled>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Update="appsettings.json" CopyToPublishDirectory="Never" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\UnchainexWallet\UnchainexWallet.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<RuntimeHostConfigurationOption Include="System.Globalization.Invariant" Value="true" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
+		<PackageReference Include="Unchain" />
+	</ItemGroup>
+
+</Project>

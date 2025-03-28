@@ -1,0 +1,43 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:settings="using:UnchainexWallet.Fluent.ViewModels.Settings"
+             mc:Ignorable="d" d:DesignWidth="650"
+             x:DataType="settings:BitcoinTabSettingsViewModel"
+             x:Class="UnchainexWallet.Fluent.Views.Settings.BitcoinTabSettingsView"
+             x:CompileBindings="True">
+  <StackPanel Classes="settingsLayout">
+
+    <DockPanel>
+      <TextBlock Text="Network" />
+      <ComboBox ItemsSource="{Binding Networks}"
+                SelectedItem="{Binding Settings.Network}" />
+    </DockPanel>
+
+    <DockPanel>
+      <TextBlock Text="Connect to Bitcoin Node RPC" />
+      <ToggleSwitch IsChecked="{Binding Settings.UseBitcoinRpc}" />
+    </DockPanel>
+    <DockPanel IsVisible="{Binding Settings.UseBitcoinRpc}"
+      ToolTip.Tip="Unchainex will download blocks from a full node you control.">
+      <TextBlock Text="Bitcoin RPC Endpoint" />
+        <TextBox Text="{Binding BitcoinRpcEndPoint}">
+          <Interaction.Behaviors>
+            <TextBoxAutoSelectTextBehavior />
+            <WhitespacePasteRemovalBehavior />
+            <WhitespaceInputRemovalBehavior />
+          </Interaction.Behaviors>
+        </TextBox>
+    </DockPanel>
+    <DockPanel IsVisible="{Binding Settings.UseBitcoinRpc}">
+      <TextBlock Text="Bitcoin RPC CredentialString" />
+      <TextBox Text="{Binding Settings.BitcoinRpcCredentialString}" />
+    </DockPanel>
+
+    <DockPanel ToolTip.Tip="Payments (from others) below this value won't appear if you have already received coins to the same address.">
+      <TextBlock Text="Dust Attack Limit" />
+      <CurrencyEntryBox Classes="standalone" Text="{Binding DustThreshold}" CurrencyCode="BTC" />
+    </DockPanel>
+  </StackPanel>
+</UserControl>

@@ -1,0 +1,146 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:addWallet="clr-namespace:UnchainexWallet.Fluent.ViewModels.AddWallet"
+             mc:Ignorable="d" d:DesignWidth="800"
+             x:Class="UnchainexWallet.Fluent.Views.AddWallet.WelcomePageView"
+             x:DataType="addWallet:WelcomePageViewModel"
+             x:CompileBindings="True">
+  <Interaction.Behaviors>
+    <FocusOnAttachedBehavior />
+  </Interaction.Behaviors>
+
+  <UserControl.Styles>
+    <Style Selector="ContentArea /template/ StackPanel#PART_Header">
+      <Setter Property="Height" Value="32" />
+    </Style>
+  </UserControl.Styles>
+
+  <ContentArea EnableCancel="False"
+                        EnableBack="{Binding CanGoBack^}"
+                        EnableNext="True"
+                        ClipToBounds="False"
+                        NextContent="{Binding NextLabel}"
+                        ScrollViewer.VerticalScrollBarVisibility="Disabled">
+
+    <DockPanel LastChildFill="True">
+
+      <!-- TODO: Uncomment in the case there is more than 1 welcome screen. -->
+      <!-- Indicator & Buttons -->
+      <!-- <ListBox HorizontalAlignment="Center" -->
+      <!--          SelectedIndex="{Binding SelectedIndex}" -->
+      <!--          Background="Transparent" -->
+      <!--          IsHitTestVisible="False" -->
+      <!--          DockPanel.Dock="Bottom"> -->
+      <!--   <ListBox.Styles> -->
+      <!--     <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter"> -->
+      <!--       <Setter Property="Background" Value="Transparent" /> -->
+      <!--     </Style> -->
+      <!--     <Style Selector="ListBoxItem:selected /template/ ContentPresenter"> -->
+      <!--       <Setter Property="TextBlock.Foreground" Value="{DynamicResource SystemChromeAltLowColor}" /> -->
+      <!--     </Style> -->
+      <!--     <Style Selector="ListBoxItem"> -->
+      <!--       <Setter Property="Opacity" Value="0.3" /> -->
+      <!--     </Style> -->
+      <!--     <Style Selector="ListBoxItem:selected"> -->
+      <!--       <Setter Property="Opacity" Value="1" /> -->
+      <!--     </Style> -->
+      <!--     <Style Selector="Ellipse"> -->
+      <!--       <Setter Property="Fill" Value="{DynamicResource SystemChromeAltLowColor}" /> -->
+      <!--       <Setter Property="Width" Value="9" /> -->
+      <!--       <Setter Property="Height" Value="9" /> -->
+      <!--     </Style> -->
+      <!--   </ListBox.Styles> -->
+      <!--   <ItemsControl.ItemsPanel> -->
+      <!--     <ItemsPanelTemplate> -->
+      <!--       <StackPanel Orientation="Horizontal" Spacing="5" /> -->
+      <!--     </ItemsPanelTemplate> -->
+      <!--   </ItemsControl.ItemsPanel> -->
+      <!--   <Ellipse /> -->
+      <!-- </ListBox> -->
+
+      <!-- Pages -->
+      <Carousel SelectedIndex="{Binding SelectedIndex}"
+                DockPanel.Dock="Top"
+                Margin="0 10">
+        <Interaction.Behaviors>
+          <ExecuteCommandOnKeyDownBehavior Command="{Binding BackCommand}"
+                                           IsEnabled="{Binding CanGoBack^}" Key="Left" />
+          <ExecuteCommandOnKeyDownBehavior Command="{Binding NextCommand}"
+                                           IsEnabled="{Binding EnableNextKey}" Key="Right" />
+        </Interaction.Behaviors>
+        <Carousel.Styles>
+          <Style Selector="TextBlock.text">
+            <Setter Property="Opacity" Value="0.5" />
+            <Setter Property="FontWeight" Value="Light" />
+            <Setter Property="FontSize" Value="14" />
+          </Style>
+
+          <Style Selector="TextBlock.title2">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="Padding" Value="0 4 8 4" />
+          </Style>
+
+          <Style Selector="TextBlock.title1">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="31" />
+          </Style>
+
+          <Style Selector="Viewbox.icon">
+            <Setter Property="MaxHeight" Value="50" />
+            <Setter Property="DockPanel.Dock" Value="Bottom" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+          </Style>
+
+          <Style Selector="Grid TextBlock">
+            <Setter Property="TextAlignment" Value="Left" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+          </Style>
+
+          <Style Selector="Grid StackPanel">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Width" Value="230" />
+          </Style>
+        </Carousel.Styles>
+        <Carousel.PageTransition>
+          <PageSlide Duration="0:0:0.5" SlideOutEasing="{StaticResource FluentEasing}"
+                     SlideInEasing="{StaticResource FluentEasing}" />
+        </Carousel.PageTransition>
+
+        <!-- Get started -->
+        <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+          <StackPanel DockPanel.Dock="Bottom" Spacing="10">
+            <TextBlock Text="Welcome to Unchainex Wallet" FontSize="30" HorizontalAlignment="Center" />
+
+            <TextBlock TextAlignment="Center" Text="An easy to use, privacy focused, open source bitcoin wallet." FontWeight="Light" />
+          </StackPanel>
+          <Panel Height="120" HorizontalAlignment="Center" DockPanel.Dock="Bottom" Margin="0 0 0 20">
+            <ExperimentalAcrylicBorder Margin="2">
+              <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial BackgroundSource="Digger"
+                                             TintColor="White"
+                                             TintOpacity="0"
+                                             FallbackColor="White"
+                                             MaterialOpacity="0" />
+              </ExperimentalAcrylicBorder.Material>
+            </ExperimentalAcrylicBorder>
+            <Viewbox>
+              <Panel>
+                <Border Width="465.5" Height="465.5" />
+                <Path Fill="#FFFFFF" Opacity="1"
+                      Data="M 14 37 L 14 452 L 453 452 L 453 37 z " />
+                <Path Fill="{DynamicResource RegionColor}"
+                      Data="M 0 233.002 L 0 466.004 233.250 465.752 L 466.500 465.500 466.752 232.750 L 467.004 0 233.502 0 L 0 0 0 233.002 M 0.492 233.500 C 0.492 361.650, 0.608 413.926, 0.750 349.670 C 0.892 285.413, 0.892 180.563, 0.750 116.670 C 0.608 52.776, 0.492 105.350, 0.492 233.500 M 168.234 91.250 L 168.500 118.500 182.250 118.778 L 196 119.056 196 91.528 L 196 64 181.984 64 L 167.968 64 168.234 91.250 M 285.644 86.530 C 276.163 88.326, 265.035 92.653, 257.248 97.572 C 250.206 102.021, 190.738 160.862, 184.399 169.654 C 167.948 192.470, 165.170 225.014, 177.513 250.328 C 180.988 257.455, 190.556 271.084, 192.511 271.692 C 193.067 271.866, 199.299 266.217, 206.359 259.141 L 219.197 246.275 215.805 241.832 C 205.343 228.126, 204.116 209.110, 212.719 194 C 215.908 188.400, 272.745 131.032, 279.252 126.846 C 289.601 120.188, 303.310 118.285, 314.909 121.895 C 327.066 125.678, 335.903 133.356, 341.362 144.877 C 344.288 151.052, 344.500 152.244, 344.500 162.500 C 344.500 172.826, 344.302 173.919, 341.265 180.331 C 338.674 185.800, 335.542 189.695, 325.546 199.876 L 313.062 212.590 326.317 225.817 L 339.571 239.044 350.086 228.272 C 365.821 212.153, 370.769 204.908, 375.454 191.135 C 385.779 160.779, 377.713 128.990, 354.034 106.714 C 336.067 89.812, 309.585 81.996, 285.644 86.530 M 112.007 115.600 L 102.720 125.200 120.610 143.313 C 130.450 153.276, 138.619 161.638, 138.765 161.895 C 139.137 162.553, 145.098 156.714, 152.257 148.678 L 158.334 141.855 140.428 123.928 C 130.579 114.067, 122.245 106, 121.907 106 C 121.570 106, 117.115 110.320, 112.007 115.600 M 64 181.984 L 64 196 91.528 196 L 119.056 196 118.778 182.250 L 118.500 168.500 91.250 168.234 L 64 167.968 64 181.984 M 260.348 204.851 L 247.196 217.500 251.095 222.500 C 257.359 230.531, 259.375 236.812, 259.443 248.500 C 259.497 258.001, 259.318 258.881, 255.849 266.146 C 252.403 273.362, 250.469 275.502, 221.517 304.146 C 204.643 320.841, 188.985 335.751, 186.722 337.281 C 175.152 345.100, 158.541 346.043, 145.540 339.617 C 123.257 328.604, 114.846 302.863, 126.236 280.538 C 127.365 278.325, 133.942 270.757, 140.851 263.720 L 153.415 250.924 140.453 237.963 L 127.492 225.001 114.212 238.251 C 106.909 245.538, 99.147 254.200, 96.964 257.500 C 76.817 287.958, 80.493 329.344, 105.721 356.087 C 116.844 367.878, 129.788 375.313, 145.903 379.166 C 157.322 381.896, 175.925 381.360, 186.500 377.996 C 195.782 375.043, 205.152 370.247, 212.500 364.687 C 220.397 358.713, 278.758 299.881, 282.945 293.675 C 294.524 276.509, 299.226 254.317, 295.587 234 C 293.078 219.989, 284.453 202.456, 276.330 194.851 L 273.500 192.202 260.348 204.851 M 347.222 283.750 L 347.500 297.500 374.750 297.766 L 402 298.032 402 284.016 L 402 270 374.472 270 L 346.944 270 347.222 283.750 M 313.084 317.681 L 303.869 327.363 322.427 345.920 L 340.985 364.478 350.997 354.503 L 361.009 344.529 342.765 326.264 C 332.730 316.219, 324.020 308, 323.410 308 C 322.799 308, 318.152 312.357, 313.084 317.681 M 270 374.472 L 270 402 284.016 402 L 298.032 402 297.766 374.750 L 297.500 347.500 283.750 347.222 L 270 346.944 270 374.472" />
+              </Panel>
+            </Viewbox>
+          </Panel>
+        </DockPanel>
+      </Carousel>
+    </DockPanel>
+  </ContentArea>
+</UserControl>

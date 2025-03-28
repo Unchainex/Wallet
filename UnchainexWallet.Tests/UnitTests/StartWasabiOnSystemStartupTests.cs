@@ -1,0 +1,84 @@
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using UnchainexWallet.Fluent.Helpers;
+using UnchainexWallet.Fluent;
+using UnchainexWallet.Helpers;
+using UnchainexWallet.Tests.Helpers;
+using Xunit;
+
+namespace UnchainexWallet.Tests.UnitTests;
+
+public class StartUnchainexOnSystemStartupTests
+{
+	private readonly WindowsStartupTestHelper _windowsHelper = new();
+
+	[Fact]
+	public async Task ModifyStartupOnDifferentSystemsTestAsync()
+	{
+		UiConfig originalConfig = GetUiConfig();
+		try
+		{
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+				await StartupHelper.ModifyStartupSettingAsync(true);
+
+				Assert.True(_windowsHelper.RegistryKeyExists());
+
+				await StartupHelper.ModifyStartupSettingAsync(false);
+
+				Assert.False(_windowsHelper.RegistryKeyExists());
+			}
+			else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+			{
+				await StartupHelper.ModifyStartupSettingAsync(true);
+
+				Assert.True(File.Exists(LinuxStartupTestHelper.FilePath));
+				Assert.Equal(LinuxStartupTestHelper.ExpectedDesktopFileContent, LinuxStartupTestHelper.GetFileContent());
+
+				await StartupHelper.ModifyStartupSettingAsync(false);
+
+				Assert.False(File.Exists(LinuxStartupTestHelper.FilePath));
+			}
+			else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+			{
+				// We don't read back the results, because on the CI pipeline, we cannot hit the "Allow" option of the pop-up window,
+				// which comes up when a third-party app wants to modify the Login Items.
+
+				await StartupHelper.ModifyStartupSettingAsync(true);
+
+				await StartupHelper.ModifyStartupSettingAsync(false);
+			}
+		}
+		finally
+		{
+			// Restore original setting for developers.
+			await StartupHelper.ModifyStartupSettingAsync(originalConfig.RunOnSystemStartup);
+		}
+	}
+
+	[Fact]
+	public void RunOnSystemStartupGetsSetCorrectly()
+	{
+		// Imitate fresh UiConfig file
+		string workDir = Common.GetWorkDir();
+		IoHelpers.EnsureDirectoryExists(workDir);
+		UiConfig config = UiConfig.LoadFile(Path.Combine(workDir, "UiConfig.json"));
+		Assert.True(config.Oobe);
+		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+		{
+			Assert.True(config.RunOnSystemStartup);
+		}
+		else
+		{
+			Assert.False(config.RunOnSystemStartup);
+		}
+		File.Delete(config.FilePath);
+	}
+
+	private UiConfig GetUiConfig()
+	{
+		string dataDir = EnvironmentHelpers.GetDataDir(Path.Combine("UnchainexWallet", "Client"));
+		return UiConfig.LoadFile(Path.Combine(dataDir, "UiConfig.json"));
+	}
+}

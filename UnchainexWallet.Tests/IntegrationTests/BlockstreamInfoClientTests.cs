@@ -1,0 +1,94 @@
+using System.Net.Http;
+using NBitcoin;
+using System.Threading;
+using System.Threading.Tasks;
+using UnchainexWallet.Blockchain.Analysis.FeesEstimation;
+using UnchainexWallet.Services;
+using UnchainexWallet.Tests.Helpers;
+using UnchainexWallet.Tor;
+using UnchainexWallet.WebClients.BlockstreamInfo;
+using UnchainexWallet.WebClients.Unchainex;
+using Xunit;
+
+namespace UnchainexWallet.Tests.IntegrationTests;
+
+public class BlockstreamInfoClientTests : IAsyncLifetime
+{
+	public BlockstreamInfoClientTests()
+	{
+		ClearnetHttpClientFactory = new HttpClientFactory();
+		TorHttpClientFactory = new OnionHttpClientFactory(new Uri($"socks5://{Common.TorSocks5Endpoint}"));
+
+		TorProcessManager = new(Common.TorSettings, new EventBus());
+	}
+
+	private IHttpClientFactory ClearnetHttpClientFactory { get; }
+	private IHttpClientFactory TorHttpClientFactory { get; }
+	private TorProcessManager TorProcessManager { get; }
+
+	public async Task InitializeAsync()
+	{
+		using CancellationTokenSource startTimeoutCts = new(TimeSpan.FromMinutes(2));
+
+		await TorProcessManager.StartAsync(startTimeoutCts.Token);
+	}
+
+	public async Task DisposeAsync()
+	{
+		await TorProcessManager.DisposeAsync();
+	}
+
+	[Fact]
+	public async Task GetFeeEstimatesClearnetMainnetAsync()
+	{
+		BlockstreamInfoClient client = new(Network.Main, ClearnetHttpClientFactory);
+		AllFeeEstimate estimates = await client.GetFeeEstimatesAsync(CancellationToken.None);
+		Assert.NotNull(estimates);
+		Assert.NotEmpty(estimates.Estimations);
+	}
+
+	[Fact]
+	public async Task GetFeeEstimatesTorMainnetAsync()
+	{
+		BlockstreamInfoClient client = new(Network.Main, TorHttpClientFactory);
+		AllFeeEstimate estimates = await client.GetFeeEstimatesAsync(CancellationToken.None);
+		Assert.NotNull(estimates);
+		Assert.NotEmpty(estimates.Estimations);
+	}
+
+	[Fact]
+	public async Task GetFeeEstimatesClearnetTestnetAsync()
+	{
+		BlockstreamInfoClient client = new(Network.TestNet, ClearnetHttpClientFactory);
+		AllFeeEstimate estimates = await client.GetFeeEstimatesAsync(CancellationToken.None);
+		Assert.NotNull(estimates);
+		Assert.NotEmpty(estimates.Estimations);
+	}
+
+	[Fact]
+	public async Task GetFeeEstimatesTorTestnetAsync()
+	{
+		BlockstreamInfoClient client = new(Network.TestNet, TorHttpClientFactory);
+		AllFeeEstimate estimates = await client.GetFeeEstimatesAsync(CancellationToken.None);
+		Assert.NotNull(estimates);
+		Assert.NotEmpty(estimates.Estimations);
+	}
+
+	[Fact]
+	public async Task SimulatesFeeEstimatesClearnetRegtestAsync()
+	{
+		BlockstreamInfoClient client = new(Network.RegTest, ClearnetHttpClientFactory);
+		AllFeeEstimate estimates = await client.GetFeeEstimatesAsync(CancellationToken.None);
+		Assert.NotNull(estimates);
+		Assert.NotEmpty(estimates.Estimations);
+	}
+
+	[Fact]
+	public async Task SimulatesFeeEstimatesTorRegtestAsync()
+	{
+		BlockstreamInfoClient client = new(Network.RegTest, TorHttpClientFactory);
+		AllFeeEstimate estimates = await client.GetFeeEstimatesAsync(CancellationToken.None);
+		Assert.NotNull(estimates);
+		Assert.NotEmpty(estimates.Estimations);
+	}
+}
